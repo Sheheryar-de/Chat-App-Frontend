@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore.js";
 
 const SignUpPage = () => {
-  const { user, setUser, setIsAuthenticated } = useAuthStore();
+  const { addUser } = useAuthStore();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -63,16 +63,14 @@ const SignUpPage = () => {
     setLoading(true);
 
     setTimeout(() => {
-      setUser({
+      addUser({
         name,
         email,
         password,
         confirmPassword,
         gender: selectedGender,
       });
-      setIsAuthenticated(true);
-      console.log("User data stored in Zustand:", user);
-      navigate("/");
+      navigate("/login");
 
       setLoading(false);
     }, 2000);

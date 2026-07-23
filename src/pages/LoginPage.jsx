@@ -5,7 +5,7 @@ import Input from "../components/Input.jsx";
 import { useAuthStore } from "../store/authStore.js";
 
 const LoginPage = () => {
-  const { setUser, setIsAuthenticated } = useAuthStore();
+  const { users, setIsAuthenticated, setCurrentUser } = useAuthStore();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,9 +31,19 @@ const LoginPage = () => {
     setLoading(true);
 
     setTimeout(() => {
-      setUser({ email, password });
-      setIsAuthenticated(true);
-      navigate("/");
+      console.log("Users in Zustand:", users);
+      const user = users.find(
+        (u) => u.email === email && u.password === password,
+      );
+      if (!user) {
+        setError("Invalid email or password!");
+        setLoading(false);
+        return;
+      } else {
+        setCurrentUser(user);
+        setIsAuthenticated(true);
+        navigate("/");
+      }
 
       setLoading(false);
     }, 2000);
